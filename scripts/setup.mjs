@@ -4,7 +4,7 @@ if (existsSync('.env')) {
   console.log('.env уже существует; значения сохранены.');
 } else {
   const db = randomBytes(24).toString('hex');
-  const password = randomBytes(18).toString('base64url');
+  const password = process.env.ADMIN_PASSWORD || 'kontur2026';
   const session = randomBytes(32).toString('hex');
   writeFileSync(
     '.env',

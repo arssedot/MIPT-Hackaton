@@ -421,18 +421,6 @@ nav {
   align-items: center;
   gap: 14px;
 }
-.environment {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.75rem;
-  color: var(--muted);
-  white-space: nowrap;
-}
-.env-divider {
-  color: var(--muted);
-  margin: 0 3px;
-}
 .content {
   padding: 39px 43px 16px;
   max-width: 1500px;
@@ -1764,9 +1752,6 @@ dd {
   .topbar > div > svg {
     display: none;
   }
-  .environment {
-    font-size: 0.6875rem;
-  }
   .content {
     padding: 26px 20px 12px;
   }
@@ -1960,7 +1945,6 @@ body,
 .checklist-card,
 .history-list,
 .document-view,
-.preference-controls,
 .segmented-control,
 .quote,
 .recommendation,
@@ -2055,16 +2039,6 @@ button:active:not(:disabled) {
 }
 .topbar > div:first-child > span {
   line-height: 1.5;
-}
-.topbar > .topbar-actions {
-  gap: 16px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  margin-left: auto;
-}
-.topbar .environment {
-  display: none;
 }
 .content {
   min-width: 0;
@@ -2419,12 +2393,6 @@ button:active:not(:disabled) {
 .login-card .muted {
   line-height: 1.8;
 }
-.login-preferences {
-  position: absolute;
-  right: 28px;
-  top: 24px;
-  z-index: 5;
-}
 .orbital {
   color: var(--purple-dark);
   border-color: var(--accent-border);
@@ -2432,57 +2400,6 @@ button:active:not(:disabled) {
 }
 .orbital:after {
   border-color: var(--accent-border);
-}
-.preference-controls {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 4px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  box-shadow: var(--card-shadow);
-  flex-shrink: 0;
-}
-.preference-controls button,
-.preference-controls select {
-  font-size: 0.75rem;
-}
-.preference-theme {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 34px;
-  border-radius: 8px;
-  color: var(--accent-ink);
-}
-.preference-theme:hover {
-  background: var(--purple-light);
-}
-.theme-icon {
-  display: inline-flex;
-  animation: icon-reveal 240ms ease-out both;
-}
-.preference-select {
-  display: flex;
-  gap: 3px;
-  align-items: center;
-  padding-left: 7px;
-  border-left: 1px solid var(--line);
-  color: var(--muted);
-}
-.preference-select select {
-  color: var(--ink);
-  background: transparent;
-  border: none;
-  padding: 7px 4px 7px 0;
-  min-height: 34px;
-  cursor: pointer;
-  max-width: 78px;
-}
-.preference-select select option {
-  color: var(--ink);
-  background: var(--surface);
 }
 .appearance-heading {
   display: flex;
@@ -2619,16 +2536,6 @@ button:active:not(:disabled) {
     scale: 1.08;
   }
 }
-@keyframes icon-reveal {
-  from {
-    opacity: 0;
-    transform: rotate(-25deg) scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: rotate(0) scale(1);
-  }
-}
 @media (min-width: 1500px) {
   .page-heading h1 {
     font-size: 3rem;
@@ -2705,9 +2612,6 @@ button:active:not(:disabled) {
   .example-card p {
     font-size: 0.8125rem;
   }
-  .topbar-actions {
-    gap: 5px;
-  }
   .heading-art {
     display: none;
   }
@@ -2734,9 +2638,6 @@ button:active:not(:disabled) {
   .topbar > div:first-child > span,
   .topbar > div:first-child > svg {
     display: none;
-  }
-  .topbar > .topbar-actions {
-    margin-left: auto;
   }
   .content {
     padding: 26px 18px 12px;
@@ -2823,10 +2724,6 @@ button:active:not(:disabled) {
   .login-card {
     padding: 110px 24px 40px;
   }
-  .login-preferences {
-    top: 20px;
-    right: 20px;
-  }
   .login-card > .brand {
     margin-bottom: 16px;
   }
@@ -2850,15 +2747,6 @@ button:active:not(:disabled) {
   .type-preview > span {
     font-size: 2.25rem;
   }
-  .preference-select {
-    padding-left: 4px;
-  }
-  .preference-controls select {
-    font-size: 0.6875rem;
-  }
-  .preference-theme {
-    width: 32px;
-  }
 }
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -2878,4 +2766,117 @@ button:active:not(:disabled) {
 html[data-text-size='large'] .sidebar .brand small,
 html[data-text-size='extra'] .sidebar .brand small {
   display: none;
+}
+
+/* Final presentation: customization lives in Settings; the first-use hint stays quiet. */
+body {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+button,
+input,
+select,
+small {
+  font-variant-numeric: inherit;
+}
+.personalization-tip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 0 18px;
+  margin: -5px 0 5px;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+.personalization-tip > svg {
+  color: var(--accent-ink);
+  opacity: 0.8;
+}
+.personalization-tip p {
+  flex: 1;
+}
+.personalization-tip .text-button {
+  font-size: inherit;
+  white-space: nowrap;
+}
+.personalization-tip .icon-button {
+  padding: 5px;
+}
+.model-card .section-heading {
+  margin-bottom: 15px;
+}
+.model-card .model-name {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.9375rem;
+  margin-top: 0;
+}
+.model-name strong {
+  font-weight: 600;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.model-guide-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--accent-ink);
+  font-size: 0.8125rem;
+  margin-top: 22px;
+}
+.model-guide-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.segmented-control .text-scale-value {
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
+  font-weight: 500;
+  letter-spacing: 0;
+  opacity: 0.75;
+}
+.app-footer > span:last-child {
+  margin-left: 0;
+}
+@media (max-width: 720px) {
+  .topbar {
+    min-height: 60px;
+  }
+  .topbar > div:first-child {
+    flex: 1;
+  }
+  .topbar > div:first-child > span:last-child {
+    display: inline;
+    font-size: 0.8125rem;
+  }
+  .personalization-tip {
+    flex-wrap: wrap;
+    padding-bottom: 16px;
+    gap: 8px;
+  }
+  .personalization-tip p {
+    flex-basis: calc(100% - 30px);
+  }
+  .personalization-tip .text-button {
+    margin-left: 27px;
+  }
+  .personalization-tip .icon-button {
+    margin-left: auto;
+  }
+  .model-card .section-heading {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .login-card {
+    padding-top: 45px;
+  }
+  .app-footer > span:nth-child(2) {
+    display: inline;
+    margin-left: auto;
+    text-align: right;
+    max-width: 70%;
+  }
 }

@@ -1,5 +1,15 @@
 export type Language = 'ru' | 'en';
 export const english: Record<string, string> = {
+  'Введите пароль для доступа к проверке документов.':
+    'Enter your password to access document review.',
+  'Доступ к вашему рабочему пространству': 'Access to your workspace',
+  'Подсказка о настройках': 'Workspace customization tip',
+  'Тема, язык и размер текста — в настройках.':
+    'Theme, language and text size are available in Settings.',
+  'Настроить интерфейс': 'Customize workspace',
+  'Не показывать подсказку': 'Dismiss customization tip',
+  'Оформление, язык и подключённая модель.': 'Appearance, language and your connected model.',
+  'Как работает модель': 'How the model works',
   'Не удалось выполнить запрос.': 'The request could not be completed.',
   'Выберите DOCX или TXT размером до 8 МБ.': 'Choose a DOCX or TXT file up to 8 MB.',
   'Удалить проверку вместе с извлечённым текстом и решениями?':
@@ -18,12 +28,8 @@ export const english: Record<string, string> = {
   'Находите противоречия, проверяйте требования': 'Find contradictions, check requirements',
   'и дорабатывайте документы в одном пространстве.': 'and refine documents in one workspace.',
   'Ваше рабочее пространство': 'Your workspace',
-  'Введите пароль, созданный при настройке проекта.':
-    'Enter the password created during project setup.',
   'Пароль доступа': 'Access password',
   'Войти в кабинет': 'Sign in',
-  'Пароль хранится в локальном файле .local/access.txt':
-    'Your password is in the local .local/access.txt file',
   М: 'W',
   'Рабочее пространство': 'Workspace',
   'Команда закупок': 'Procurement team',
@@ -147,28 +153,11 @@ export const english: Record<string, string> = {
   'Справочник проекта ·': 'Project reference catalog ·',
   'ВАША СРЕДА': 'YOUR ENVIRONMENT',
   'Настройки проверки': 'Review settings',
-  'Подключение модели и управление локальным окружением.':
-    'Personalize your workspace and manage AI settings.',
   'Смысловая проверка': 'AI analysis',
   Подключена: 'Configured',
   'Не подключена': 'Not configured',
   'Модель:': 'Model:',
   'Не выбрана': 'Not selected',
-  'Добавьте ключ провайдера и название модели в локальный файл':
-    'Add your provider key and model name to the local file',
-  ', задайте': ', set',
-  'и перезапустите приложение. Используется API, совместимый с Chat Completions.':
-    'and restart the app. A Chat Completions-compatible API is used.',
-  'Базовый HTTPS-адрес API провайдера': 'The provider’s HTTPS API base URL',
-  'Доступная вам модель с поддержкой JSON': 'An available model that supports JSON',
-  'Ключ доступа; хранится только на сервере': 'Access key, stored only on the server',
-  'Ключ не передаётся браузеру. Каждый запуск модели отдельно требует подтверждения, что документ открытый.':
-    'The key is never sent to the browser. Each AI analysis requires confirmation that the document is public.',
-  'Локальное рабочее пространство': 'Local workspace',
-  'Данные проверок, извлечённый текст и решения сохраняются в PostgreSQL. Все пользователи с паролем работают в одном пространстве. Исходные бинарные файлы после извлечения текста не сохраняются.':
-    'Reviews, extracted text and decisions are stored in PostgreSQL. All password holders share one workspace. Original binary files are not retained after text extraction.',
-  'Инструкция по смене пароля, резервному копированию и переносу на сервер — в README и docs/HANDOFF.md.':
-    'See README and docs/HANDOFF.md for password changes, backups and server migration.',
   'ОТ ДОКУМЕНТА К РЕШЕНИЮ': 'FROM DOCUMENT TO DECISION',
   'Как работает проверка': 'How document review works',
   'Четыре шага для предметного разбора закупочного ТЗ.':
@@ -189,7 +178,6 @@ export const english: Record<string, string> = {
     'Without a model, only a limited set of local checks is performed. API failures and unverified quotes are reported: the app saves local results with a warning. The final assessment remains with the reviewer.',
   'Контур ТЗ': 'Kontur TZ',
   'Ясные требования. Обоснованные решения.': 'Clear requirements. Informed decisions.',
-  'Создано для кейса МФТИ': 'Built for the MIPT case',
   контур: 'kontur',
   тз: 'tz',
   'Поставка оборудования': 'Equipment procurement',
@@ -291,8 +279,6 @@ export const english: Record<string, string> = {
     'Interface language does not change document text or the language of findings.',
   'Точный текст. Ясные решения.': 'Precise text. Clear decisions.',
   'Проверьте, насколько удобно читать этот текст.': 'Check how comfortable this text is to read.',
-  'Переключить на английский': 'Switch to English',
-  'Переключить на русский': 'Switch to Russian',
 };
 
 export function translate(

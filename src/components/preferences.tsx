@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { Languages, Monitor, Moon, Sun, Type } from 'lucide-react';
+import { Monitor, Moon, Sun, Type } from 'lucide-react';
 import { translate, type Language } from '@/lib/i18n';
 
 type Theme = 'light' | 'dark' | 'system';
@@ -10,7 +10,6 @@ type Preferences = { theme: Theme; language: Language; textSize: TextSize };
 const defaults: Preferences = { theme: 'system', language: 'ru', textSize: 'standard' };
 const storageKey = 'kontur.preferences.v1';
 type PreferencesContext = Preferences & {
-  resolvedTheme: 'light' | 'dark';
   dateLocale: string;
   t: (message: string, values?: Record<string, string | number>) => string;
   update: (value: Partial<Preferences>) => void;
@@ -54,16 +53,13 @@ function apply(preferences: Preferences) {
 export function PreferencesProvider({ children }: { children: React.ReactNode }) {
   const [preferences, setPreferences] = useState<Preferences>(defaults);
   const preferencesRef = useRef<Preferences>(defaults);
-  const [systemDark, setSystemDark] = useState(false);
   useEffect(() => {
     const initial = readPreferences();
     preferencesRef.current = initial;
     setPreferences(initial);
     apply(initial);
     const media = window.matchMedia('(prefers-color-scheme: dark)');
-    setSystemDark(media.matches);
     const change = () => {
-      setSystemDark(media.matches);
       if (preferencesRef.current.theme === 'system')
         document.documentElement.dataset.theme = media.matches ? 'dark' : 'light';
     };
@@ -100,13 +96,10 @@ export function PreferencesProvider({ children }: { children: React.ReactNode })
       translate(message, preferences.language, values),
     [preferences.language],
   );
-  const resolvedTheme =
-    preferences.theme === 'system' ? (systemDark ? 'dark' : 'light') : preferences.theme;
   return (
     <Context.Provider
       value={{
         ...preferences,
-        resolvedTheme,
         dateLocale: preferences.language === 'en' ? 'en-GB' : 'ru-RU',
         update,
         t,
@@ -121,52 +114,6 @@ export function usePreferences() {
   const value = useContext(Context);
   if (!value) throw new Error('PreferencesProvider is required.');
   return value;
-}
-
-export function PreferenceControls({ className = '' }: { className?: string }) {
-  const { language, textSize, resolvedTheme, t, update } = usePreferences();
-  return (
-    <div
-      className={`preference-controls ${className}`}
-      role="group"
-      aria-label={t('Настройки интерфейса')}
-    >
-      <button
-        type="button"
-        className="preference-theme"
-        aria-label={t(resolvedTheme === 'dark' ? 'Светлая тема' : 'Тёмная тема')}
-        title={t(resolvedTheme === 'dark' ? 'Светлая тема' : 'Тёмная тема')}
-        onClick={() => update({ theme: resolvedTheme === 'dark' ? 'light' : 'dark' })}
-      >
-        <span key={resolvedTheme} className="theme-icon">
-          {resolvedTheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-        </span>
-      </button>
-      <label className="preference-select">
-        <Languages size={16} aria-hidden="true" />
-        <select
-          aria-label={t('Язык интерфейса')}
-          value={language}
-          onChange={(event) => update({ language: event.target.value as Language })}
-        >
-          <option value="ru">RU</option>
-          <option value="en">EN</option>
-        </select>
-      </label>
-      <label className="preference-select font-select">
-        <Type size={17} aria-hidden="true" />
-        <select
-          aria-label={t('Размер текста')}
-          value={textSize}
-          onChange={(event) => update({ textSize: event.target.value as TextSize })}
-        >
-          <option value="standard">100%</option>
-          <option value="large">115%</option>
-          <option value="extra">130%</option>
-        </select>
-      </label>
-    </div>
-  );
 }
 
 export function AppearanceSettings() {
@@ -243,7 +190,7 @@ export function AppearanceSettings() {
                 onClick={() => update({ textSize: item.value })}
               >
                 {t(item.label)}
-                <small>{item.scale}</small>
+                <span className="text-scale-value">{item.scale}</span>
               </button>
             ))}
           </div>

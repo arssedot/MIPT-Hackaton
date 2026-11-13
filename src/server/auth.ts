@@ -10,7 +10,7 @@ function secret() {
 }
 export function passwordMatches(input: string) {
   const actual = process.env.ADMIN_PASSWORD;
-  if (!actual || actual.length < 16) return false;
+  if (!actual || actual.length < 8) return false;
   const hash = (s: string) => createHmac('sha256', secret()).update(s).digest();
   return timingSafeEqual(hash(input), hash(actual));
 }

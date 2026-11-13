@@ -27,7 +27,7 @@ import {
   CheckCheck,
   PanelLeftClose,
 } from 'lucide-react';
-import { PreferenceControls, AppearanceSettings, usePreferences } from '@/components/preferences';
+import { AppearanceSettings, usePreferences } from '@/components/preferences';
 import { translateLocation } from '@/lib/i18n';
 import { categoryLabels, type Category, type Review } from '@/contracts/review';
 import { demos } from '@/lib/demo';
@@ -72,6 +72,23 @@ export function Workspace() {
   const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
   const [showDocument, setShowDocument] = useState(false);
   const [mobileNav, setMobileNav] = useState(false);
+  const [showPersonalizationTip, setShowPersonalizationTip] = useState(false);
+  function dismissPersonalizationTip() {
+    setShowPersonalizationTip(false);
+    try {
+      localStorage.setItem('kontur.personalization-seen.v1', '1');
+    } catch {}
+  }
+  useEffect(() => {
+    try {
+      setShowPersonalizationTip(localStorage.getItem('kontur.personalization-seen.v1') !== '1');
+    } catch {
+      setShowPersonalizationTip(true);
+    }
+  }, []);
+  useEffect(() => {
+    if (tab === 'settings') dismissPersonalizationTip();
+  }, [tab]);
   const input = useRef<HTMLInputElement>(null);
   useEffect(() => {
     api<{ authenticated: boolean }>('/api/auth')
@@ -211,7 +228,6 @@ export function Workspace() {
   if (!auth)
     return (
       <main className="login-screen">
-        <PreferenceControls className="login-preferences" />
         <div className="login-art">
           <span className="eyebrow">{t('ИНТЕЛЛЕКТУАЛЬНАЯ ПРОВЕРКА ЗАКУПОК')}</span>
           <h1>
@@ -232,7 +248,7 @@ export function Workspace() {
           <Brand />
           <div>
             <h2>{t('Ваше рабочее пространство')}</h2>
-            <p className="muted">{t('Введите пароль, созданный при настройке проекта.')}</p>
+            <p className="muted">{t('Введите пароль для доступа к проверке документов.')}</p>
           </div>
           <label>
             {t('Пароль доступа')}
@@ -254,7 +270,7 @@ export function Workspace() {
             <ArrowRight size={18} />
           </button>
           <p className="small muted">
-            <LockKeyhole size={13} /> {t('Пароль хранится в локальном файле .local/access.txt')}
+            <LockKeyhole size={13} /> {t('Доступ к вашему рабочему пространству')}
           </p>
         </form>
       </main>
@@ -375,13 +391,6 @@ export function Workspace() {
                       : t('Как это работает')}
             </span>
           </div>
-          <div className="topbar-actions">
-            <PreferenceControls />
-            <span className="environment">
-              <span className="local-dot" /> localhost <span className="env-divider">/</span> MVP
-              0.1
-            </span>
-          </div>
         </header>
         <main className="content">
           <div className="view-transition" key={`${tab}-${review?.id || 'new'}`}>
@@ -432,6 +441,23 @@ export function Workspace() {
                     </div>
                   </div>
                 </div>
+                {showPersonalizationTip && (
+                  <aside className="personalization-tip" aria-label={t('Подсказка о настройках')}>
+                    <Settings2 size={17} aria-hidden="true" />
+                    <p>{t('Тема, язык и размер текста — в настройках.')}</p>
+                    <button className="text-button" onClick={() => setTab('settings')}>
+                      {t('Настроить интерфейс')}
+                      <ArrowRight size={14} />
+                    </button>
+                    <button
+                      className="icon-button"
+                      aria-label={t('Не показывать подсказку')}
+                      onClick={dismissPersonalizationTip}
+                    >
+                      <X size={15} />
+                    </button>
+                  </aside>
+                )}
                 <div className="upload-grid">
                   <section className="card upload-card">
                     <div className="card-title">
@@ -1055,10 +1081,10 @@ export function Workspace() {
                 <SimpleHeading
                   eyebrow={t('ВАША СРЕДА')}
                   title={t('Настройки проверки')}
-                  description={t('Подключение модели и управление локальным окружением.')}
+                  description={t('Оформление, язык и подключённая модель.')}
                 />
                 <AppearanceSettings />
-                <section className="card settings-card">
+                <section className="card settings-card model-card">
                   <div className="section-heading">
                     <h2>{t('Смысловая проверка')}</h2>
                     <span
@@ -1067,52 +1093,20 @@ export function Workspace() {
                       {model.modelConfigured ? t('Подключена') : t('Не подключена')}
                     </span>
                   </div>
-                  <p>
-                    {t('Модель:')} <strong>{model.model || t('Не выбрана')}</strong>
+                  <p className="model-name">
+                    <span>{t('Модель:')}</span>
+                    <strong>{model.model || t('Не выбрана')}</strong>
                   </p>
-                  <p>
-                    {t('Добавьте ключ провайдера и название модели в локальный файл')}{' '}
-                    <code>.env</code>
-                    {t(', задайте')} <code>LLM_ENABLED=true</code>{' '}
-                    {t(
-                      'и перезапустите приложение. Используется API, совместимый с Chat Completions.',
-                    )}
-                  </p>
-                  <dl>
-                    <div>
-                      <dt>LLM_BASE_URL</dt>
-                      <dd>{t('Базовый HTTPS-адрес API провайдера')}</dd>
-                    </div>
-                    <div>
-                      <dt>LLM_MODEL</dt>
-                      <dd>{t('Доступная вам модель с поддержкой JSON')}</dd>
-                    </div>
-                    <div>
-                      <dt>LLM_API_KEY</dt>
-                      <dd>{t('Ключ доступа; хранится только на сервере')}</dd>
-                    </div>
-                  </dl>
-                  <div className="notice">
-                    <LockKeyhole size={18} />
-                    <p>
-                      {t(
-                        'Ключ не передаётся браузеру. Каждый запуск модели отдельно требует подтверждения, что документ открытый.',
-                      )}
-                    </p>
-                  </div>
-                </section>
-                <section className="card settings-card">
-                  <h2>{t('Локальное рабочее пространство')}</h2>
-                  <p>
-                    {t(
-                      'Данные проверок, извлечённый текст и решения сохраняются в PostgreSQL. Все пользователи с паролем работают в одном пространстве. Исходные бинарные файлы после извлечения текста не сохраняются.',
-                    )}
-                  </p>
-                  <p className="small muted">
-                    {t(
-                      'Инструкция по смене пароля, резервному копированию и переносу на сервер — в README и docs/HANDOFF.md.',
-                    )}
-                  </p>
+                  <a
+                    className="model-guide-link"
+                    href="https://github.com/arssedot/MIPT-Hackaton/blob/main/docs/MODEL.md"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <BookOpen size={15} />
+                    {t('Как работает модель')}
+                    <ArrowUpRight size={13} />
+                  </a>
                 </section>
               </>
             )}
@@ -1164,7 +1158,6 @@ export function Workspace() {
         <footer className="app-footer">
           <span>{t('Контур ТЗ')}</span>
           <span>{t('Ясные требования. Обоснованные решения.')}</span>
-          <span>{t('Создано для кейса МФТИ')}</span>
         </footer>
       </div>
     </div>
@@ -1181,7 +1174,6 @@ function Brand() {
         {t('контур')}
         <span>{t('тз')}</span>
       </strong>
-      <small>BETA</small>
     </div>
   );
 }
