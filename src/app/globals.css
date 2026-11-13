@@ -29,10 +29,10 @@
   font-size: 100%;
 }
 html[data-theme='dark'] {
-  --purple: #a84ff4;
+  --purple: #9840e5;
   --purple-dark: #c698fc;
   --purple-light: #2e1e42;
-  --purple-hover: #b368f5;
+  --purple-hover: #8e35db;
   --ink: #eee8f6;
   --muted: #b4a9c3;
   --line: #342b42;
