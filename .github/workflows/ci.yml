@@ -60,12 +60,14 @@ jobs:
       - name: Readiness and restart persistence
         run: |
           curl --fail http://localhost:3000/api/health/ready
+          node scripts/persistence-probe.mjs before
           docker compose restart app
           for attempt in $(seq 1 30); do
             if curl --fail --silent http://localhost:3000/api/health/ready; then break; fi
             sleep 2
           done
           curl --fail http://localhost:3000/api/health/ready
+          node scripts/persistence-probe.mjs after
       - name: Database outage
         run: |
           docker compose stop db
