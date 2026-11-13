@@ -1,0 +1,51 @@
+name: mipt-procurement
+services:
+  db:
+    image: postgres:17-bookworm
+    environment:
+      POSTGRES_USER: procurement
+      POSTGRES_DB: procurement
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run npm run setup first}
+    ports:
+      - "127.0.0.1:55432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U procurement -d procurement"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+  init:
+    build:
+      context: .
+      target: init
+    environment:
+      DATABASE_URL: postgresql://procurement:${POSTGRES_PASSWORD}@db:5432/procurement?schema=public
+    depends_on:
+      db:
+        condition: service_healthy
+  app:
+    build:
+      context: .
+      target: runner
+    environment:
+      DATABASE_URL: postgresql://procurement:${POSTGRES_PASSWORD}@db:5432/procurement?schema=public
+      APP_ORIGIN: ${APP_ORIGIN:-http://localhost:3000}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Run npm run setup first}
+      SESSION_SECRET: ${SESSION_SECRET:?Run npm run setup first}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://api.openai.com/v1}
+      LLM_MODEL: ${LLM_MODEL:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_ENABLED: ${LLM_ENABLED:-false}
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+      init:
+        condition: service_completed_successfully
+    restart: unless-stopped
+volumes:
+  postgres_data:
