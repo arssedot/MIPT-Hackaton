@@ -73,8 +73,27 @@ export const english: Record<string, string> = {
   'Документ обрабатывается локально': 'Document processing stays local',
   'Проверяем документ': 'Reviewing document',
   'Начать проверку': 'Start review',
-  'Извлекаем структуру и сопоставляем требования. Проверка моделью может занять до 90 секунд.':
-    'Extracting the structure and comparing requirements. AI analysis can take up to 90 seconds.',
+  'Извлекаем структуру и сопоставляем требования. Ждём ответ модели до 60 секунд; при сбое покажем локальные результаты.':
+    'Extracting the structure and comparing requirements. Waiting up to 60 seconds for AI; local results will be shown if it fails.',
+  'Извлекаем структуру документа и выполняем локальные проверки.':
+    'Extracting the document structure and running local checks.',
+  'Прервать ожидание': 'Stop waiting',
+  'Время ожидания ответа истекло. Проверьте историю перед повторным запуском.':
+    'The response timed out. Check review history before starting again.',
+  'Ожидание прервано. Проверка могла сохраниться в истории; проверьте её перед повторным запуском.':
+    'Waiting stopped. The review may have been saved in history; check it before starting again.',
+  'Модель не ответила за 60 секунд. Выполнены только локальные проверки.':
+    'The model did not respond within 60 seconds. Only local checks were completed.',
+  'Ответ модели не является корректным JSON. Выполнены только локальные проверки.':
+    'The model response is not valid JSON. Only local checks were completed.',
+  'Не удалось связаться с провайдером модели. Выполнены только локальные проверки.':
+    'The model provider could not be reached. Only local checks were completed.',
+  'Провайдер модели ограничил запросы (HTTP 429). Повторите позже или выберите другую модель.':
+    'The model provider rate-limited this request (HTTP 429). Try again later or choose another model.',
+  'Провайдер модели отклонил запрос из-за баланса или лимита расходов (HTTP 402).':
+    'The model provider rejected the request because of the balance or spending limit (HTTP 402).',
+  'Провайдер модели не принял API-ключ (HTTP 401). Проверьте ключ в настройках окружения.':
+    'The model provider rejected the API key (HTTP 401). Check the key in the environment settings.',
   'ФОКУС ПРОВЕРКИ': 'WHAT WE LOOK FOR',
   'Внимание к тому,': 'A closer look at',
   'что легко упустить': 'the details that matter',

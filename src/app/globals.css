@@ -703,9 +703,17 @@ nav {
   gap: 8px;
 }
 .progress-message {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 12px;
   color: var(--muted);
   font-size: 0.8125rem;
+}
+.progress-message .text-button {
+  font-size: inherit;
+  min-height: 32px;
 }
 .checklist-card {
   border: 1px solid var(--line);

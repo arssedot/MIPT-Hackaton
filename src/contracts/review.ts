@@ -1,4 +1,6 @@
 import { z } from 'zod';
+export const MODEL_TIMEOUT_MS = 60_000;
+export const REVIEW_TIMEOUT_MS = 80_000;
 export const categories = [
   'contradiction',
   'competition',

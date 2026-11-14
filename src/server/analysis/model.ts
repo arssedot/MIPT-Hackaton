@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
-import { findingSchema, type Document, type Finding } from '@/contracts/review';
+import { findingSchema, MODEL_TIMEOUT_MS, type Document, type Finding } from '@/contracts/review';
+import { withDeadline } from '@/lib/deadline';
 import { sources } from './sources';
 export function modelConfigured() {
   return (
@@ -8,6 +9,40 @@ export function modelConfigured() {
   );
 }
 export async function modelAnalysis(document: Document): Promise<Finding[]> {
+  try {
+    return await withDeadline(
+      (signal) => requestModel(document, signal),
+      MODEL_TIMEOUT_MS,
+      'Модель не ответила за 60 секунд. Выполнены только локальные проверки.',
+    );
+  } catch (error) {
+    if (error instanceof SyntaxError)
+      throw new Error(
+        'Ответ модели не является корректным JSON. Выполнены только локальные проверки.',
+      );
+    if (error instanceof TypeError)
+      throw new Error(
+        'Не удалось связаться с провайдером модели. Выполнены только локальные проверки.',
+      );
+    throw error;
+  }
+}
+function providerError(status: number) {
+  if (status === 429)
+    return new Error(
+      'Провайдер модели ограничил запросы (HTTP 429). Повторите позже или выберите другую модель.',
+    );
+  if (status === 402)
+    return new Error(
+      'Провайдер модели отклонил запрос из-за баланса или лимита расходов (HTTP 402).',
+    );
+  if (status === 401)
+    return new Error(
+      'Провайдер модели не принял API-ключ (HTTP 401). Проверьте ключ в настройках окружения.',
+    );
+  return new Error(`API модели вернул HTTP ${status}. Проверьте модель, ключ и квоту провайдера.`);
+}
+async function requestModel(document: Document, signal: AbortSignal): Promise<Finding[]> {
   if (!modelConfigured())
     throw new Error(
       'Модель не настроена: добавьте LLM_API_KEY, LLM_MODEL и LLM_ENABLED=true в .env.',
@@ -30,14 +65,15 @@ export async function modelAnalysis(document: Document): Promise<Finding[]> {
       ],
       response_format: { type: 'json_object' },
     }),
-    signal: AbortSignal.timeout(90_000),
+    signal,
     redirect: 'error',
   });
-  if (!response.ok)
-    throw new Error(
-      `API модели вернул HTTP ${response.status}. Проверьте модель, ключ и квоту провайдера.`,
-    );
+  if (!response.ok) {
+    void response.body?.cancel().catch(() => {});
+    throw providerError(response.status);
+  }
   const result = await response.json();
+  if (result.error) throw providerError(Number(result.error.code) || 502);
   const content = result.choices?.[0]?.message?.content;
   if (typeof content !== 'string' || content.length > 180_000)
     throw new Error('Модель вернула неподдерживаемый ответ.');
