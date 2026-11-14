@@ -1,20 +1,23 @@
 :root {
-  --purple: #90f;
-  --purple-dark: #7918d1;
-  --purple-light: #f5edff;
-  --ink: #232033;
-  --muted: #726980;
-  --line: #eeedf3;
-  --bg: #faf9fc;
+  /* MIPT print palette adapted to sRGB; navy neutrals follow the project cover. */
+  --brand: #0069b4;
+  --brand-strong: #005b9c;
+  --brand-soft: #e9f4fc;
+  --ink: #102d43;
+  --muted: #5b7081;
+  --line: #dce6ed;
+  --bg: #f5f8fa;
   --green: #39a780;
   --radius: 15px;
   --surface: #ffffff;
-  --surface-soft: #f7f2fc;
+  --surface-soft: #f0f6fa;
   --surface-glass: #ffffffed;
-  --purple-hover: #8500df;
-  --accent-ink: #8127bd;
-  --accent-border: #e2c8f5;
-  --accent-glow: #eacfff70;
+  --brand-hover: #00538f;
+  --accent-ink: #0062a8;
+  --accent-border: #b9d9ef;
+  --accent-glow: #8ac7ed40;
+  --brand-orange: #f7a824;
+  --focus-ring: #0079c8;
   --danger: #b54141;
   --danger-bg: #fff0ef;
   --warning: #91632d;
@@ -23,36 +26,38 @@
   --success-bg: #eff8f2;
   --info: #456a99;
   --info-bg: #edf4fc;
-  --backdrop: #24112f55;
-  --card-shadow: 0 8px 30px #33154605;
+  --backdrop: #00172766;
+  --card-shadow: 0 8px 30px #003c6607;
   color-scheme: light;
   font-size: 100%;
 }
 html[data-theme='dark'] {
-  --purple: #9840e5;
-  --purple-dark: #c698fc;
-  --purple-light: #2e1e42;
-  --purple-hover: #8e35db;
-  --ink: #eee8f6;
-  --muted: #b4a9c3;
-  --line: #342b42;
-  --bg: #15111d;
-  --surface: #201a2b;
-  --surface-soft: #282033;
-  --surface-glass: #201a2bf2;
-  --accent-ink: #cc9cfa;
-  --accent-border: #56366e;
-  --accent-glow: #7732b135;
+  --brand: #0073c4;
+  --brand-strong: #9bd4ff;
+  --brand-soft: #10334c;
+  --brand-hover: #0066ad;
+  --ink: #edf5fc;
+  --muted: #a7bdce;
+  --line: #254052;
+  --bg: #061a28;
+  --surface: #0d2535;
+  --surface-soft: #102e42;
+  --surface-glass: #0d2535f2;
+  --accent-ink: #a4d8ff;
+  --accent-border: #285a7c;
+  --accent-glow: #0087d82b;
+  --brand-orange: #f5b86d;
+  --focus-ring: #8ecfff;
   --green: #65cfaa;
   --danger: #f0a09a;
-  --danger-bg: #39232b;
+  --danger-bg: #3b252c;
   --warning: #dfba80;
   --warning-bg: #352c24;
   --success: #9fcdb0;
   --success-bg: #20322d;
   --info: #a8c4e8;
-  --info-bg: #212d40;
-  --backdrop: #09060db3;
+  --info-bg: #16344b;
+  --backdrop: #00101cb3;
   --card-shadow: 0 10px 30px #00000015;
   color-scheme: dark;
 }
@@ -108,12 +113,12 @@ p {
 }
 button:focus-visible,
 a:focus-visible {
-  outline: 3px solid #b66bff;
+  outline: 3px solid var(--focus-ring);
   outline-offset: 4px;
 }
 input:focus,
 select:focus {
-  outline: 2px solid #c288ff;
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 h2 {
@@ -121,7 +126,7 @@ h2 {
   letter-spacing: -0.35px;
 }
 input[type='checkbox'] {
-  accent-color: var(--purple);
+  accent-color: var(--brand);
   width: 16px;
   height: 16px;
   flex-shrink: 0;
@@ -135,15 +140,15 @@ svg {
 .small {
   font-size: 0.9375rem;
 }
-.purple-text {
-  color: var(--purple) !important;
+.brand-text {
+  color: var(--accent-ink) !important;
 }
 .danger-text {
   color: var(--muted) !important;
 }
 .text-button {
   padding: 0;
-  color: var(--purple-dark);
+  color: var(--brand-strong);
   display: inline-flex;
   gap: 7px;
   align-items: center;
@@ -152,7 +157,7 @@ svg {
 }
 .inline-link {
   padding: 0;
-  color: var(--purple-dark);
+  color: var(--brand-strong);
   border-bottom: 1px solid var(--line);
 }
 .primary,
@@ -168,12 +173,12 @@ svg {
   white-space: nowrap;
 }
 .primary {
-  background: var(--purple);
+  background: var(--brand);
   color: white;
-  box-shadow: 0 4px 9px #9900ff16;
+  box-shadow: 0 4px 9px #0069b416;
 }
 .primary:hover:not(:disabled) {
-  background: var(--purple-hover);
+  background: var(--brand-hover);
 }
 .secondary {
   background: var(--surface);
@@ -188,8 +193,8 @@ svg {
   border-radius: 6px;
 }
 .icon-button:hover {
-  background: var(--purple-light);
-  color: var(--purple);
+  background: var(--brand-soft);
+  color: var(--accent-ink);
 }
 .card {
   background: var(--surface);
@@ -216,7 +221,7 @@ svg {
 .eyebrow > span {
   height: 5px;
   width: 5px;
-  background: var(--purple);
+  background: var(--brand);
   border-radius: 50%;
 }
 .app-shell {
@@ -245,7 +250,7 @@ svg {
   height: 36px;
   width: 36px;
   border-radius: 11px;
-  background: var(--purple);
+  background: var(--brand);
   color: white;
   display: grid;
   place-items: center;
@@ -257,7 +262,7 @@ svg {
 }
 .brand strong > span {
   font-weight: 400;
-  color: var(--purple);
+  color: var(--accent-ink);
   margin-left: 2px;
 }
 .brand small {
@@ -321,7 +326,7 @@ nav {
   color: var(--muted);
 }
 .nav-item.active {
-  background: var(--purple-light);
+  background: var(--brand-soft);
   color: var(--muted);
   font-weight: 600;
 }
@@ -332,7 +337,7 @@ nav {
   margin-left: auto;
   width: 4px;
   height: 4px;
-  background: var(--purple);
+  background: var(--brand);
   border-radius: 50%;
 }
 .sidebar-note {
@@ -483,7 +488,7 @@ nav {
   border: 1px solid var(--line);
   border-radius: 12px;
   transform: rotate(8deg);
-  box-shadow: 0 15px 32px #5722870b;
+  box-shadow: 0 15px 32px #003c660b;
   padding: 21px 17px;
 }
 .art-doc-top {
@@ -547,7 +552,7 @@ nav {
   border-radius: 14px;
   background: var(--surface);
   color: var(--muted);
-  box-shadow: 0 7px 20px #57228708;
+  box-shadow: 0 7px 20px #003c6608;
 }
 .upload-grid {
   display: grid;
@@ -599,7 +604,7 @@ nav {
 }
 .dropzone.dragging {
   background: var(--surface-soft);
-  border-color: var(--purple);
+  border-color: var(--brand);
 }
 .dropzone.has-file {
   background: var(--surface-soft);
@@ -614,7 +619,7 @@ nav {
   place-items: center;
   color: var(--muted);
   margin-bottom: 16px;
-  box-shadow: 0 5px 12px #9900ff06;
+  box-shadow: 0 5px 12px #0069b406;
 }
 .dropzone strong {
   font-size: 1rem;
@@ -1472,7 +1477,7 @@ dd {
   margin: 35px 0 25px;
 }
 .login-art h1 > span {
-  color: var(--purple);
+  color: var(--brand);
 }
 .login-art p {
   font-size: 0.9375rem;
@@ -1728,7 +1733,7 @@ dd {
     transform: translateX(-100%);
     transition: none;
     width: 245px;
-    box-shadow: 8px 0 35px #2c15331f;
+    box-shadow: 8px 0 35px #0017271f;
   }
   .sidebar.mobile-open {
     transform: translateX(0);
@@ -2010,7 +2015,7 @@ button:active:not(:disabled) {
   color: var(--accent-ink);
 }
 .nav-item.active {
-  background: var(--purple-light);
+  background: var(--brand-soft);
 }
 .profile {
   flex-shrink: 0;
@@ -2082,7 +2087,7 @@ button:active:not(:disabled) {
   background: var(--line);
 }
 .art-highlight {
-  background: var(--purple-light);
+  background: var(--brand-soft);
   color: var(--accent-ink);
   border-color: var(--accent-border);
 }
@@ -2093,7 +2098,7 @@ button:active:not(:disabled) {
   animation: shield-float 7s ease-in-out infinite;
 }
 .sparkle {
-  color: var(--purple);
+  color: var(--brand-orange);
   animation: sparkle-breathe 5s ease-in-out infinite;
 }
 .s2 {
@@ -2124,13 +2129,13 @@ button:active:not(:disabled) {
   border-color: var(--accent-border);
 }
 .dropzone.dragging {
-  background: var(--purple-light);
-  border-color: var(--purple);
+  background: var(--brand-soft);
+  border-color: var(--brand);
   transform: scale(1.008);
 }
 .upload-symbol {
-  background: linear-gradient(135deg, var(--surface), var(--purple-light));
-  color: var(--purple-dark);
+  background: linear-gradient(135deg, var(--surface), var(--brand-soft));
+  color: var(--brand-strong);
   border-color: var(--accent-border);
 }
 .upload-footer {
@@ -2165,15 +2170,15 @@ button:active:not(:disabled) {
   margin-top: 4px;
 }
 .disclosure {
-  background: var(--purple-light);
+  background: var(--brand-soft);
   color: var(--accent-ink);
 }
 .primary {
-  background: var(--purple);
+  background: var(--brand);
   color: #fff;
 }
 .primary:hover:not(:disabled) {
-  background: var(--purple-hover);
+  background: var(--brand-hover);
   box-shadow: 0 6px 20px var(--accent-glow);
   transform: translateY(-2px);
 }
@@ -2202,7 +2207,7 @@ button:active:not(:disabled) {
 .example-icon,
 .step-number {
   color: var(--accent-ink);
-  background: var(--purple-light);
+  background: var(--brand-soft);
   border-color: var(--accent-border);
 }
 .example-1 {
@@ -2210,7 +2215,7 @@ button:active:not(:disabled) {
   background: var(--info-bg);
 }
 .checklist-card {
-  background: linear-gradient(155deg, var(--surface-soft), var(--purple-light));
+  background: linear-gradient(155deg, var(--surface-soft), var(--brand-soft));
   border-color: var(--accent-border);
 }
 .checklist-card h2 {
@@ -2241,7 +2246,7 @@ button:active:not(:disabled) {
 }
 .notice {
   color: var(--muted);
-  background: var(--purple-light);
+  background: var(--brand-soft);
   border-color: var(--accent-border);
 }
 .notice strong {
@@ -2268,7 +2273,7 @@ button:active:not(:disabled) {
 .quote {
   color: var(--accent-ink);
   background: var(--surface-soft);
-  border-left-color: var(--purple);
+  border-left-color: var(--brand);
 }
 .quote q {
   color: var(--accent-ink);
@@ -2303,7 +2308,7 @@ button:active:not(:disabled) {
 .category,
 .count-tag {
   color: var(--accent-ink);
-  background: var(--purple-light);
+  background: var(--brand-soft);
 }
 .finding-top {
   flex-wrap: wrap;
@@ -2328,7 +2333,7 @@ button:active:not(:disabled) {
   max-height: 82vh;
 }
 .document-block.selected {
-  background: var(--purple-light);
+  background: var(--brand-soft);
   border-color: var(--accent-border);
 }
 .source-card h2 {
@@ -2346,7 +2351,7 @@ button:active:not(:disabled) {
 }
 .settings-card code {
   color: var(--accent-ink);
-  background: var(--purple-light);
+  background: var(--brand-soft);
 }
 .history-row > button:nth-child(2) {
   color: var(--ink);
@@ -2373,15 +2378,44 @@ button:active:not(:disabled) {
   position: relative;
 }
 .login-art {
+  isolation: isolate;
   background:
-    radial-gradient(ellipse at 20% 80%, var(--accent-glow), transparent 65%),
-    linear-gradient(145deg, var(--surface-soft), var(--purple-light));
+    radial-gradient(ellipse at 100% 95%, #0069b480, transparent 60%),
+    linear-gradient(155deg, #001724, #073750);
+}
+.login-art::before,
+.login-art::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+  width: 115%;
+  height: 70%;
+  border: 2px solid #a3d3f542;
+  border-radius: 42% 30% 46% 34%;
+  background: linear-gradient(145deg, #a3d3f50a, #0069b426);
+  transform: rotate(-22deg);
+}
+.login-art::before {
+  left: 38%;
+  top: -32%;
+}
+.login-art::after {
+  left: -65%;
+  bottom: -38%;
 }
 .login-art h1 {
-  color: var(--ink);
+  color: #fff;
   font-size: clamp(2.8rem, 5vw, 4.5rem);
 }
+.login-art h1 > span {
+  color: #a3d3f5;
+}
+.login-art .eyebrow {
+  color: #a3d3f5;
+}
 .login-art p {
+  color: #c5dbea;
   line-height: 1.9;
 }
 .login-card {
@@ -2394,12 +2428,12 @@ button:active:not(:disabled) {
   line-height: 1.8;
 }
 .orbital {
-  color: var(--purple-dark);
-  border-color: var(--accent-border);
+  color: #a3d3f5;
+  border-color: #a3d3f566;
   animation: shield-float 9s ease-in-out infinite;
 }
 .orbital:after {
-  border-color: var(--accent-border);
+  border-color: #a3d3f566;
 }
 .appearance-heading {
   display: flex;
@@ -2417,7 +2451,7 @@ button:active:not(:disabled) {
   width: 48px;
   flex-shrink: 0;
   border-radius: 14px;
-  background: var(--purple-light);
+  background: var(--brand-soft);
   color: var(--accent-ink);
   border: 1px solid var(--accent-border);
 }
@@ -2462,7 +2496,7 @@ button:active:not(:disabled) {
 .segmented-control button[aria-pressed='true'] {
   background: var(--surface);
   color: var(--accent-ink);
-  box-shadow: 0 2px 8px #2914390a;
+  box-shadow: 0 2px 8px #003c660a;
 }
 .segmented-control small {
   font-size: 0.6875rem;
@@ -2473,7 +2507,7 @@ button:active:not(:disabled) {
   align-items: center;
   gap: 18px;
   border: 1px solid var(--accent-border);
-  background: linear-gradient(125deg, var(--purple-light), var(--surface));
+  background: linear-gradient(125deg, var(--brand-soft), var(--surface));
   padding: 22px;
   border-radius: 12px;
   margin: 28px 0 18px;

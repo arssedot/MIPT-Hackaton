@@ -128,7 +128,7 @@ test('dark theme and maximum text size remain readable on desktop and mobile wit
   await workspace(page);
   await expect(page.locator('.view-transition')).toHaveCSS('animation-name', 'none');
   await expect(page.locator('.art-document')).toHaveCSS('animation-name', 'none');
-  await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(21, 17, 29)');
+  await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(6, 26, 40)');
   await page.screenshot({
     animations: 'disabled',
     path: '.local/screens/dark-large-desktop.png',

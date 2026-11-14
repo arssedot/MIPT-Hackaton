@@ -710,7 +710,7 @@ export function Workspace() {
                   </div>
                   <div className="stat-card">
                     <span>{t('Рассмотрено экспертом')}</span>
-                    <strong className="purple-text">
+                    <strong className="brand-text">
                       {Object.keys(review.decisions).length.toString().padStart(2, '0')}
                     </strong>
                     <small>
