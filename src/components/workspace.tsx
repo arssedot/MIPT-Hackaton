@@ -29,24 +29,16 @@ import {
 } from 'lucide-react';
 import { AppearanceSettings, usePreferences } from '@/components/preferences';
 import { translateLocation } from '@/lib/i18n';
-import { categoryLabels, REVIEW_TIMEOUT_MS, type Category, type Review } from '@/contracts/review';
-import { withDeadline } from '@/lib/deadline';
+import { categoryLabels, type Category, type Review } from '@/contracts/review';
 import { demos } from '@/lib/demo';
 import { sources } from '@/server/analysis/sources';
 type Tab = 'new' | 'history' | 'sources' | 'settings' | 'help';
 type History = { id: string; name: string; createdAt: string; count: number; engine: string };
-async function api<T>(path: string, init?: RequestInit, timeoutMs = 15_000): Promise<T> {
-  return withDeadline(
-    async (signal) => {
-      const response = await fetch(path, { ...init, signal });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Не удалось выполнить запрос.');
-      return data;
-    },
-    timeoutMs,
-    'Время ожидания ответа истекло. Проверьте историю перед повторным запуском.',
-    init?.signal,
-  );
+async function api<T>(path: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(path, init);
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || 'Не удалось выполнить запрос.');
+  return data;
 }
 function download(name: string, data: string, type: string) {
   const url = URL.createObjectURL(new Blob([data], { type }));
@@ -98,8 +90,6 @@ export function Workspace() {
     if (tab === 'settings') dismissPersonalizationTip();
   }, [tab]);
   const input = useRef<HTMLInputElement>(null);
-  const analysisRequest = useRef<AbortController | null>(null);
-  useEffect(() => () => analysisRequest.current?.abort(), []);
   useEffect(() => {
     api<{ authenticated: boolean }>('/api/auth')
       .then((d) => setAuth(d.authenticated))
@@ -159,25 +149,14 @@ export function Workspace() {
     form.set('file', file);
     form.set('useModel', String(useModel));
     form.set('isPublic', String(publicData));
-    const controller = new AbortController();
-    analysisRequest.current = controller;
     try {
-      const data = await api<Review>(
-        '/api/reviews',
-        { method: 'POST', body: form, signal: controller.signal },
-        REVIEW_TIMEOUT_MS,
-      );
+      const data = await api<Review>('/api/reviews', { method: 'POST', body: form });
       setReview(data);
       setFilter('all');
       setTab('new');
     } catch (e) {
-      setError(
-        controller.signal.aborted
-          ? 'Ожидание прервано. Проверка могла сохраниться в истории; проверьте её перед повторным запуском.'
-          : (e as Error).message,
-      );
+      setError((e as Error).message);
     } finally {
-      analysisRequest.current = null;
       setBusy(false);
     }
   }
@@ -601,19 +580,11 @@ export function Workspace() {
                       </button>
                     </div>
                     {busy && (
-                      <div className="progress-message" role="status">
+                      <p className="progress-message" role="status">
                         {t(
-                          useModel
-                            ? 'Извлекаем структуру и сопоставляем требования. Ждём ответ модели до 60 секунд; при сбое покажем локальные результаты.'
-                            : 'Извлекаем структуру документа и выполняем локальные проверки.',
+                          'Извлекаем структуру и сопоставляем требования. Проверка моделью может занять до 90 секунд.',
                         )}
-                        <button
-                          className="text-button"
-                          onClick={() => analysisRequest.current?.abort()}
-                        >
-                          {t('Прервать ожидание')}
-                        </button>
-                      </div>
+                      </p>
                     )}
                   </section>
                   <aside className="checklist-card">
